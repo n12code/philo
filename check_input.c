@@ -1,29 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   check_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/26 16:38:21 by nbodin            #+#    #+#             */
-/*   Updated: 2025/05/27 09:26:08 by nbodin           ###   ########lyon.fr   */
+/*   Created: 2025/05/27 09:05:45 by nbodin            #+#    #+#             */
+/*   Updated: 2025/05/27 09:22:45 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	main(int argc, char **argv)
+int	check_input(int	argc, char **argv)
 {
-	t_data	data;
-	
-	if (argc < 5 || argc > 6)
-		return (1);
-	if (check_input(argc, argv))
-		return (1);
-	if (init(&data, argc, argv))
-		
-	//check_input
-	//init
-	//launch
-	//free
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	while (argv[i])
+	{
+		j = 0;
+		while (argv[i][j])
+		{
+			//maybe parse starting and trailing spaces
+			if (argv[i][j] < 48 || argv[i][j] > 57)
+				return (1);
+			j++;
+		}
+		i++;
+	}
+	return (0);
 }

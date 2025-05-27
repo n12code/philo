@@ -1,29 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/26 16:38:21 by nbodin            #+#    #+#             */
-/*   Updated: 2025/05/27 09:26:08 by nbodin           ###   ########lyon.fr   */
+/*   Created: 2025/05/27 10:06:20 by nbodin            #+#    #+#             */
+/*   Updated: 2025/05/27 10:13:03 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	main(int argc, char **argv)
+u_int64_t	ato_uint(char *str)
 {
-	t_data	data;
-	
-	if (argc < 5 || argc > 6)
-		return (1);
-	if (check_input(argc, argv))
-		return (1);
-	if (init(&data, argc, argv))
-		
-	//check_input
-	//init
-	//launch
-	//free
+	size_t	i;
+	u_int64_t	nb;
+
+	i = 0;
+	nb = 0;
+	while (str[i])
+	{
+		nb *= 10;
+		nb += str[i] - 48;
+		i++;
+	}
+	return (nb);
 }

@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:38:15 by nbodin            #+#    #+#             */
-/*   Updated: 2025/05/26 17:25:40 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/05/27 09:12:23 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <unistd.h>
 # include <pthread.h>
 # include <sys/time.h>
+# include <stddef.h>
+# include <sys/types.h>
 
 struct s_data;
 
