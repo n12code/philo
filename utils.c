@@ -6,21 +6,23 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 10:06:20 by nbodin            #+#    #+#             */
-/*   Updated: 2025/05/27 10:13:03 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/05/28 09:09:49 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-u_int64_t	ato_uint(char *str)
+long	ft_atol(char *str)
 {
 	size_t	i;
-	u_int64_t	nb;
+	long	nb;
 
 	i = 0;
 	nb = 0;
 	while (str[i])
 	{
+		if (nb > (__LONG_MAX__ - (str[i] - 48)) / 10 )
+			return (-1);
 		nb *= 10;
 		nb += str[i] - 48;
 		i++;
