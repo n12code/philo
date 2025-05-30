@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 09:24:47 by nbodin            #+#    #+#             */
-/*   Updated: 2025/05/28 09:45:14 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/05/28 16:34:51 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,41 @@ int	init_philos(t_data *data)
 	return (0);
 }
 
+int	init_forks(t_data *data)
+{
+	size_t	i;
+
+	i = 0;
+	data->forks = malloc(data->philos_num * sizeof(pthread_mutex_t));
+	if (!data->forks)
+		return (1);
+	while (i < data->philos_num)
+	{
+		pthread_mutex_init(&data->forks[i], NULL);
+		i++;
+	}
+	i = 1;
+	data->philos[0].l_fork = &data->forks[0];
+	data->philos[0].r_fork = &data->forks[data->philos_num - 1];
+	while (i < data->philos_num)
+	{
+		data->philos[i].l_fork = &data->forks[i];
+		data->philos[i].r_fork = &data->forks[i - 1];
+		i++;
+	}
+	return (0);
+}
+
 int	init(t_data	*data, int argc, char **argv)
 {
 	if (init_data(data, argc, argv))
 		return (1);
 	if (init_philos(data))
 		return (1);
-	//init forks
+	if (init_forks(data))
+		return (1);
+	data->th_arr = malloc(data->philos_num * sizeof(pthread_t));
+	if (!data->th_arr)
+		return (1);
+	return (0);
 }
