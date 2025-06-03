@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:38:21 by nbodin            #+#    #+#             */
-/*   Updated: 2025/05/28 16:36:05 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/06/03 16:21:25 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,6 @@ int	main(int argc, char **argv)
 		return (1);
 	//one philo case
 	if (launch_threads(&data))
-	//launch threads
+	
 	//free
 }

@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:38:15 by nbodin            #+#    #+#             */
-/*   Updated: 2025/05/27 09:12:23 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/06/03 16:17:38 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,19 @@
 # include <stddef.h>
 # include <sys/types.h>
 
+# define FORK "has taken a fork"
+# define EATING "is eating"
+# define THINKING "is thinking"
+# define SLEEPING "is sleeping"
+# define DIED "died"
+
 struct s_data;
 
 typedef struct s_philo {
 	int			id;
 	int			meal_count;
 	int			eating;
+	int			done;
 	t_data		*data;
 	pthread_t	th;
 	u_int64_t	time_to_die;

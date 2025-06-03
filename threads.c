@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 16:36:12 by nbodin            #+#    #+#             */
-/*   Updated: 2025/05/28 19:45:13 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/06/03 15:04:05 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,36 @@
 
 void	*supervisor(void *philo_ptr)
 {
-	//check if the philo isnt dead, if so is he eating
-	//check that he ate all his meals, if so make him finished
+	t_philo	*philo;
+
+	philo = (t_philo *) philo_ptr;
+	while (1)
+	{
+		pthread_mutex_lock(&philo->data->lock);
+		if (philo->data->dead == 1)
+		{
+			pthread_mutex_unlock(&philo->data->lock);
+			break ;
+		}
+		pthread_mutex_unlock(&philo->data->lock);
+		pthread_mutex_lock(&philo->lock);
+		if (get_time() >= philo->time_to_die && philo->eating == 0)
+			print_message();//died
+		pthread_mutex_unlock(&philo->lock);
+		pthread_mutex_lock(&philo->lock);
+		pthread_mutex_lock(&philo->data->lock);
+		if (philo->meal_count == philo->data->meals_num && philo->done == 0)
+		{
+			philo->data->finished++;
+			philo->meal_count++;
+			philo->done = 1;
+			break ;
+		}
+		pthread_mutex_unlock(&philo->lock);
+		pthread_mutex_unlock(&philo->data->lock);
+		ft_usleep(100);
+	}
+	return ((void *) 0);
 }
 
 void	*routine(void *philo_ptr)

@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 09:24:47 by nbodin            #+#    #+#             */
-/*   Updated: 2025/05/28 16:34:51 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/06/03 15:01:53 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int	init_philos(t_data *data)
 		data->philos[i].id = i + 1;
 		data->philos[i].meal_count = 0;
 		data->philos[i].eating = 0;
+		data->philos[i].done = 0;
 		pthread_mutex_init(&data->philos[i].lock, NULL);
 		i++;
 	}
