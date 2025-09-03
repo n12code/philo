@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:38:15 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/03 20:38:30 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/03 20:43:59 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <sys/time.h>
 # include <stddef.h>
 # include <sys/types.h>
+# include <stdint.h>
 
 # define FORK "has taken a fork"
 # define EATING "is eating"

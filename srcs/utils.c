@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 14:15:40 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/03 20:39:53 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/03 20:43:45 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,6 @@ void	print_message(t_philo *philos, char *msg)
 	time = get_time() - philos->data->start_time;
     pthread_mutex_lock(&philos->data->print_lock);
     if (!get_philos_state(philos->data))
-        printf("%llu %d %s\n", time, philos->id, msg);
+        printf("%lu %d %s\n", time, philos->id, msg);
     pthread_mutex_unlock(&philos->data->print_lock);
 }
