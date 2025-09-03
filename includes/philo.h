@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:38:15 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/03 16:30:14 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/03 20:38:30 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,10 @@ typedef struct s_data {
 
     pthread_mutex_t *forks;         // Array of fork mutexes
     pthread_mutex_t print_lock;     // Mutex to protect console output
-    pthread_mutex_t state_lock;     // Protects shared flags (stop, meal counters, etc.)
-
+    pthread_mutex_t last_meal_lock;     // Protects shared flags (stop, meal counters, etc.)
+	pthread_mutex_t	meals_eaten_lock;
+	pthread_mutex_t stop_lock;
+	
 	pthread_t		monitor_alive;	// Thread that checks if philosophers are alive
 	pthread_t		monitor_full;	// Thread that checks if philosophers are full
 

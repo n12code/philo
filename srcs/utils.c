@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 14:15:40 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/02 09:59:38 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/03 20:39:53 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,9 @@ void free_data(t_data *data)
 	}
 	if (data->philos)
 		free(data->philos);
-	pthread_mutex_destroy(&data->state_lock);
+	pthread_mutex_destroy(&data->last_meal_lock);
+	pthread_mutex_destroy(&data->meals_eaten_lock);
+	pthread_mutex_destroy(&data->stop_lock);
 	pthread_mutex_destroy(&data->print_lock);
 }
 

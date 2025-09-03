@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 12:20:06 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/03 16:30:47 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/03 20:39:19 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,9 @@ int init_data(int argc, char **argv, t_data *data)
 		data->n_meals = ft_atoi(argv[5]);
 	data->stop = 0;
 	pthread_mutex_init(&data->print_lock, NULL);
-	pthread_mutex_init(&data->state_lock, NULL);
+	pthread_mutex_init(&data->last_meal_lock, NULL);
+	pthread_mutex_init(&data->meals_eaten_lock, NULL);
+	pthread_mutex_init(&data->stop_lock, NULL);
 	if (init_malloc(data))
 		return (1);
 	return (0);

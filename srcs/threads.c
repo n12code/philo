@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 14:14:34 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/03 15:48:15 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/03 20:41:55 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ void	*routine(void *philos_pointer)
 	t_philo	*philos;
 
 	philos = (t_philo *) philos_pointer;
-	pthread_mutex_lock(&philos->data->state_lock);
+	pthread_mutex_lock(&philos->data->last_meal_lock);
 	philos->last_meal = philos->data->start_time;
-	pthread_mutex_unlock(&philos->data->state_lock);
+	pthread_mutex_unlock(&philos->data->last_meal_lock);
 	while (!get_philos_state(philos->data))
 	{
 		if (philos_eat(philos))

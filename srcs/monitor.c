@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 09:34:09 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/03 17:18:41 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/03 20:41:34 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,21 @@
 
 void	change_philos_state(t_data *data)
 {
-	pthread_mutex_lock(&data->state_lock);
+	pthread_mutex_lock(&data->stop_lock);
 	data->stop = 1;
-	pthread_mutex_unlock(&data->state_lock);
+	pthread_mutex_unlock(&data->stop_lock);
 }
 
 int	philo_died(t_philo *philo)
 {
-	u_int64_t time =get_time();
-	u_int64_t last_time = get_last_meal_time(philo);
+	// u_int64_t time =get_time();
+	// u_int64_t last_time = get_last_meal_time(philo);
 	
-	pthread_mutex_lock(&philo->data->print_lock);
-	printf("time = %llu\n", time);
-	printf("last_time = %llu\n", last_time);
-	printf("time_to_die = %llu\n", philo->data->time_to_die);
-	pthread_mutex_unlock(&philo->data->print_lock);
+	// pthread_mutex_lock(&philo->data->print_lock);
+	// printf("time = %llu\n", time);
+	// printf("last_time = %llu\n", last_time);
+	// printf("time_to_die = %llu\n", philo->data->time_to_die);
+	// pthread_mutex_unlock(&philo->data->print_lock);
 	if (get_time() - get_last_meal_time(philo) >= philo->data->time_to_die) //&& !get_eating_state(philo)
 		return (1);
 	return (0);
