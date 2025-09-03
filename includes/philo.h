@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:38:15 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/02 10:01:57 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/03 16:30:14 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ struct s_data;
 typedef struct s_philo {
     int             id;             // Philosopher ID (1..n)
     int             meals_eaten;    // How many times this philo ate
-	int				eating;			// State of this philo
+	//int				eating;			// State of this philo
     u_int64_t		last_meal;      // Timestamp (ms) of last meal
 
     pthread_t       thread;         // Thread handle
@@ -58,7 +58,8 @@ typedef struct s_data {
     pthread_mutex_t print_lock;     // Mutex to protect console output
     pthread_mutex_t state_lock;     // Protects shared flags (stop, meal counters, etc.)
 
-	pthread_t		monitor;		// Thread that checks if philosophers are alive or full
+	pthread_t		monitor_alive;	// Thread that checks if philosophers are alive
+	pthread_t		monitor_full;	// Thread that checks if philosophers are full
 
     t_philo         *philos;        // Array of philosopher structs
 }   t_data;
@@ -78,12 +79,14 @@ int	check_input_valid(int argc, char **argv);
 
 // init.c
 int	init_forks(t_data *data);
+int	init_malloc(t_data *data);
 int	init_philos(t_data *data);
 int init_data(int argc, char **argv, t_data *data);
 
 // threads.c
-int	join_threads(t_data *data);
-int	create_threads(t_data *data);
+int		join_threads(t_data *data);
+int		create_threads(t_data *data);
+void	*routine(void *philos_pointer);
 
 // utils.c
 u_int64_t	get_time(void);
@@ -91,9 +94,11 @@ void		free_data(t_data *data);
 void		print_message(t_philo *philos, char *msg);
 void		ft_usleep(uint64_t sleep_time, t_data *data);
 
-
 // getters.c
-int	get_philos_state(t_data *data);
+int			get_philos_state(t_data *data);
+int			get_meals_eaten(t_philo *philo);
+int			get_eating_state(t_philo *philo);
+u_int64_t	get_last_meal_time(t_philo *philo);
 
 // actions.c
 int		philos_eat(t_philo *philos);
@@ -102,6 +107,11 @@ void	drop_forks(t_philo *philos);
 int		philos_sleep(t_philo *philos);
 int		philos_think(t_philo *philos);
 
-
+// monitors.c
+int		philo_full(t_philo *philo);
+int		philo_died(t_philo *philo);
+void	*monitor_full(void *data_pointer);
+void	change_philos_state(t_data *data);
+void	*monitor_alive(void *data_pointer);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 21:44:03 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/01 17:20:50 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/03 17:18:52 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,4 +20,34 @@ int	get_philos_state(t_data *data)
 	philos_state = data->stop;
 	pthread_mutex_unlock(&data->state_lock);
 	return (philos_state);	
+}
+
+u_int64_t	get_last_meal_time(t_philo *philo)
+{
+	u_int64_t	last_meal;
+	
+	pthread_mutex_lock(&philo->data->state_lock);
+	last_meal = philo->last_meal;
+	pthread_mutex_unlock(&philo->data->state_lock);
+	return (last_meal);	
+}
+
+// int	get_eating_state(t_philo *philo)
+// {
+// 	int	eating_state;
+	
+// 	pthread_mutex_lock(&philo->data->state_lock);
+// 	eating_state = philo->eating;
+// 	pthread_mutex_unlock(&philo->data->state_lock);
+// 	return (eating_state);	
+// }
+
+int	get_meals_eaten(t_philo *philo)
+{
+	int	meals_eaten;
+	
+	pthread_mutex_lock(&philo->data->state_lock);
+	meals_eaten = philo->meals_eaten;
+	pthread_mutex_unlock(&philo->data->state_lock);
+	return (meals_eaten);
 }

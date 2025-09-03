@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 22:01:32 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/02 10:07:02 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/03 16:41:06 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,16 @@ int	philos_eat(t_philo *philos)
 {
 	if (take_forks(philos))
 		return (1);
-	pthread_mutex_lock(&philos->data->state_lock);
-	philos->eating = 1;
-	pthread_mutex_unlock(&philos->data->state_lock);
+	// pthread_mutex_lock(&philos->data->state_lock);
+	// philos->eating = 1;
+	// pthread_mutex_unlock(&philos->data->state_lock);
 	print_message(philos, EATING);
-	ft_usleep(philos->data->time_to_eat, philos->data);
 	pthread_mutex_lock(&philos->data->state_lock);
-	philos->eating = 0;
 	philos->last_meal = get_time();
 	philos->meals_eaten++;
 	pthread_mutex_unlock(&philos->data->state_lock);
+	ft_usleep(philos->data->time_to_eat, philos->data);
+	//philos->eating = 0;
 	drop_forks(philos);	
 	return (get_philos_state(philos->data));
 }

@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 14:14:34 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/01 16:50:02 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/03 15:48:15 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@ void	*routine(void *philos_pointer)
 	t_philo	*philos;
 
 	philos = (t_philo *) philos_pointer;
+	pthread_mutex_lock(&philos->data->state_lock);
+	philos->last_meal = philos->data->start_time;
+	pthread_mutex_unlock(&philos->data->state_lock);
 	while (!get_philos_state(philos->data))
 	{
 		if (philos_eat(philos))
@@ -31,17 +34,6 @@ void	*routine(void *philos_pointer)
 		if (philos_think(philos))
 			break ;
 	}
-	return (NULL);
-}
-
-void	*monitor(void *data_pointer)
-{
-	t_data	*data;
-
-	data = (t_data *) data_pointer;
-	(void)data;
-	//track if they are alive
-	//track if they are full
 	return (NULL);
 }
 
@@ -59,8 +51,13 @@ int	create_threads(t_data *data)
 			return (1);
 		i++;
 	}
-	// if (pthread_create(&data->monitor, NULL, &monitor, &data))
-	// 	return (1);
+	if (pthread_create(&data->monitor_alive, NULL, &monitor_alive, &data))
+	 	return (1);
+	if (data->n_meals != -1)
+	{
+		if (pthread_create(&data->monitor_full, NULL, &monitor_full, &data))
+			return (1);
+	}
 	return (0);
 }
 
@@ -74,6 +71,13 @@ int	join_threads(t_data *data)
 		if (pthread_join(data->philos[i].thread, NULL))
 			return (1);
 		i++;
+	}
+	if (pthread_join(data->monitor_alive, NULL))
+		return (1);
+	if (data->n_meals != -1)
+	{
+		if (pthread_join(data->monitor_full, NULL))
+			return (1);
 	}
 	return (0);
 }
