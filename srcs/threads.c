@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 14:14:34 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/03 20:41:55 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/04 10:11:57 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,11 @@ void	*routine(void *philos_pointer)
 	t_philo	*philos;
 
 	philos = (t_philo *) philos_pointer;
-	pthread_mutex_lock(&philos->data->last_meal_lock);
-	philos->last_meal = philos->data->start_time;
-	pthread_mutex_unlock(&philos->data->last_meal_lock);
+	if (philos->data->n_philos > 50)
+    {
+        if (philos->id % 2 == 0)
+            usleep(100);
+    }
 	while (!get_philos_state(philos->data))
 	{
 		if (philos_eat(philos))
@@ -43,7 +45,6 @@ int	create_threads(t_data *data)
 	t_philo	*philos;
 	
 	i = 0;
-	data->start_time = get_time();
 	philos = data->philos;
 	while (i < data->n_philos)
 	{
@@ -51,11 +52,11 @@ int	create_threads(t_data *data)
 			return (1);
 		i++;
 	}
-	if (pthread_create(&data->monitor_alive, NULL, &monitor_alive, &data))
+	if (pthread_create(&data->monitor_alive, NULL, &monitor_alive, data))
 	 	return (1);
 	if (data->n_meals != -1)
 	{
-		if (pthread_create(&data->monitor_full, NULL, &monitor_full, &data))
+		if (pthread_create(&data->monitor_full, NULL, &monitor_full, data))
 			return (1);
 	}
 	return (0);

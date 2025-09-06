@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 22:01:32 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/03 20:40:49 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/06 15:20:52 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,21 @@ int	philos_eat(t_philo *philos)
 {
 	if (take_forks(philos))
 		return (1);
-	// pthread_mutex_lock(&philos->data->state_lock);
-	// philos->eating = 1;
-	// pthread_mutex_unlock(&philos->data->state_lock);
-	print_message(philos, EATING);
 	pthread_mutex_lock(&philos->data->last_meal_lock);
 	philos->last_meal = get_time();
 	pthread_mutex_unlock(&philos->data->last_meal_lock);
+	pthread_mutex_lock(&philos->data->eating_lock);
+	philos->eating = 1;
+	pthread_mutex_unlock(&philos->data->eating_lock);
+	print_message(philos, EATING);
 	pthread_mutex_lock(&philos->data->meals_eaten_lock);
 	philos->meals_eaten++;
 	pthread_mutex_unlock(&philos->data->meals_eaten_lock);
 	ft_usleep(philos->data->time_to_eat, philos->data);
-	//philos->eating = 0;
 	drop_forks(philos);	
+	pthread_mutex_lock(&philos->data->eating_lock);
+	philos->eating = 0;
+	pthread_mutex_unlock(&philos->data->eating_lock);
 	return (get_philos_state(philos->data));
 }
 
@@ -36,8 +38,8 @@ int	take_forks(t_philo *philos)
 {
 	if (get_philos_state(philos->data))
 		return (1);
-	// if (philos->data->n_philos == 1)
-	// 	return (handle_single_philo(philos));
+	if (philos->data->n_philos == 1)
+	 	return (handle_single_philo(philos));
 	if (philos->id % 2 == 0)
 	{
 		pthread_mutex_lock(philos->left_fork);
@@ -72,6 +74,8 @@ int		philos_think(t_philo *philos)
 	if (get_philos_state(philos->data))
 		return (1);
 	print_message(philos, THINKING);
+	if (philos->data->n_philos > 50)
+        ft_usleep(1, philos->data);
 	return (0);
 }
 

@@ -6,11 +6,23 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 14:15:40 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/03 20:43:45 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/04 10:11:15 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	handle_single_philo(t_philo *philos)
+{
+	pthread_mutex_lock(philos->left_fork);
+	print_message(philos, FORK);
+	while (!get_philos_state(philos->data))
+	{
+	}
+	pthread_mutex_unlock(philos->left_fork);
+	change_philos_state(philos->data);
+	return (1);
+}
 
 void free_data(t_data *data)
 {
@@ -60,9 +72,12 @@ void	print_message(t_philo *philos, char *msg)
 {
 	u_int64_t	time;
 
-	time = get_time() - philos->data->start_time;
+	time = 0;
     pthread_mutex_lock(&philos->data->print_lock);
     if (!get_philos_state(philos->data))
-        printf("%lu %d %s\n", time, philos->id, msg);
+	{
+		time = get_time() - philos->data->start_time;
+        printf("%llu %d %s\n", time, philos->id, msg);
+	}
     pthread_mutex_unlock(&philos->data->print_lock);
 }

@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 12:20:06 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/03 20:39:19 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/06 14:56:55 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,14 @@ int	init_philos(t_data *data)
 
 	i = 0;
 	philos = data->philos;
+	data->start_time = get_time();
 	while (i < data->n_philos)
 	{
 		philos[i].id = i + 1;
 		philos[i].meals_eaten = 0;
+		philos[i].last_meal = data->start_time;
 		philos[i].data = data;
-		//philos[i].eating = 0;
-		// last_meal ?
+		philos[i].eating = 0;
 		i++;
 	}
 	return (0);

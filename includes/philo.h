@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 16:38:15 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/03 20:43:59 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/04 09:59:16 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ struct s_data;
 typedef struct s_philo {
     int             id;             // Philosopher ID (1..n)
     int             meals_eaten;    // How many times this philo ate
-	//int				eating;			// State of this philo
+	int				eating;			// State of this philo
     u_int64_t		last_meal;      // Timestamp (ms) of last meal
 
     pthread_t       thread;         // Thread handle
@@ -60,6 +60,7 @@ typedef struct s_data {
     pthread_mutex_t last_meal_lock;     // Protects shared flags (stop, meal counters, etc.)
 	pthread_mutex_t	meals_eaten_lock;
 	pthread_mutex_t stop_lock;
+	pthread_mutex_t eating_lock;
 	
 	pthread_t		monitor_alive;	// Thread that checks if philosophers are alive
 	pthread_t		monitor_full;	// Thread that checks if philosophers are full
@@ -94,8 +95,10 @@ void	*routine(void *philos_pointer);
 // utils.c
 u_int64_t	get_time(void);
 void		free_data(t_data *data);
+int			handle_single_philo(t_philo *philos);
 void		print_message(t_philo *philos, char *msg);
 void		ft_usleep(uint64_t sleep_time, t_data *data);
+
 
 // getters.c
 int			get_philos_state(t_data *data);

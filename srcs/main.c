@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 10:00:39 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/01 16:25:53 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/03 22:18:38 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,20 @@ int	init(int argc, char **argv, t_data *data)
 int	check_input(int argc, char **argv)
 {
 	if (argc < 5 || argc > 6)
+	{
+		printf("Error: Invalid arguments.\n");
 		return (1);
+	}
 	if (check_input_digits(argv))
+	{
+		printf("Error: Invalid arguments.\n");
 		return (1);
+	}
 	if (check_input_valid(argc, argv))
+	{
+		printf("Error: Invalid arguments.\n");
 		return (1);
+	}
 	return (0);
 }
 
