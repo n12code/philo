@@ -6,11 +6,11 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 10:00:39 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/03 22:18:38 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/07 11:37:22 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_2.h"
 
 int	init(int argc, char **argv, t_data *data)
 {

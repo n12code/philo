@@ -1,0 +1,132 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   monitor_2.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/07 11:16:15 by nbodin            #+#    #+#             */
+/*   Updated: 2025/09/07 16:28:03 by nbodin           ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "philo_2.h"
+
+void change_philos_state(t_data *data)
+{
+    lock_safely(&data->stop_lock);
+    data->stop = 1;
+    unlock_safely(&data->stop_lock);
+}
+
+int philo_died(t_philo *philo)
+{
+    long long time_since_last_meal;
+    
+    time_since_last_meal = get_time() - get_last_meal_time(philo);
+    if (time_since_last_meal >= philo->data->time_to_die && !get_eating_state(philo))
+        return (1);
+    return (0);
+}
+
+int philo_full(t_philo *philo)
+{
+    if (get_meals_eaten(philo) >= philo->data->n_meals)
+        return (1);
+    return (0);
+}
+
+static int check_philosopher_status(t_data *data, int philosopher_id, int *death_detected)
+{
+    if (philo_died(&data->philos[philosopher_id]) && !(*death_detected))
+    {
+        log_action(data, philosopher_id, DIED, RED);
+        change_philos_state(data);
+        *death_detected = 1;
+        return (0);
+    }
+    return (1);
+}
+
+void *monitor_routine(void *monitor_data_ptr)
+{
+    t_monitoring_data *monitor_data;
+    t_data *data;
+    int i;
+    int death_detected;
+
+    monitor_data = (t_monitoring_data *)monitor_data_ptr;
+    data = monitor_data->data;
+    death_detected = 0; 
+    while (!get_philos_state(data))
+    {
+        i = monitor_data->id;
+        while (i < (int)data->n_philos)
+        {
+            if (check_philosopher_status(data, i, &death_detected) == 0)
+                break;
+            i += monitor_data->nbr_monitors;
+        }
+        usleep(MONITOR_SLEEP);
+    }
+    return (NULL);
+}
+
+void *completion_monitor_routine(void *data_ptr)
+{
+    t_data *data;
+    size_t i;
+    int all_done;
+    
+	data  = (t_data *)data_ptr;
+    if (data->n_meals == -1)
+        return (NULL);  
+    while (!get_philos_state(data))
+    {
+        all_done = 1;
+        i = 0;
+        while (i < data->n_philos)
+        {
+            if (get_meals_eaten(&data->philos[i]) < data->n_meals)
+            {
+                all_done = 0;
+                break;
+            }
+            i++;
+        }
+        if (all_done)
+        {
+            int someone_eating = 1;
+            while (someone_eating && !get_philos_state(data))
+            {
+                someone_eating = 0;
+                i = 0;
+                while (i < data->n_philos)
+                {
+                    if (get_eating_state(&data->philos[i]))
+                    {
+                        someone_eating = 1;
+                        break;
+                    }
+                    i++;
+                }
+                if (someone_eating)
+                    usleep(1000);
+            }
+            change_philos_state(data);
+            break;
+        }
+        usleep(MONITOR_SLEEP);
+    }
+    return (NULL);
+}
+
+int get_nbr_chunks(int num_philosophers)
+{
+    int chunks;
+
+    chunks = num_philosophers / CHUNK_SIZE;
+    if (num_philosophers % CHUNK_SIZE != 0)
+        chunks++;
+    return (chunks);
+}
