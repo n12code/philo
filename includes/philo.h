@@ -31,8 +31,16 @@
 # define SCRIBE_SLEEP_TIME 59
 # define SCRIBE_TIME_GAP 67
 # define MONITOR_SLEEP 100
+# define FORK_RETRY_DELAY 50
 
 struct s_data;
+
+/* Mutex structure with status tracking */
+typedef struct s_mutex
+{
+    pthread_mutex_t mutex;
+    int             status; // 0 available, 1 taken
+} t_mutex;
 
 /* Log structure for advanced logging system */
 typedef struct s_log {
@@ -54,8 +62,8 @@ typedef struct s_philo {
     pthread_t       thread;
     pthread_mutex_t philo_mutex;
 
-    pthread_mutex_t *left_fork;
-    pthread_mutex_t *right_fork;
+    t_mutex         *left_fork;
+    t_mutex         *right_fork;
 
     struct s_data   *data;
 } t_philo;
@@ -78,7 +86,7 @@ typedef struct s_data {
     long long       start_time;
     int             stop;
 
-    pthread_mutex_t *forks;
+    t_mutex         *forks;
     pthread_mutex_t print_lock;
     pthread_mutex_t last_meal_lock;
     pthread_mutex_t meals_eaten_lock;
@@ -112,6 +120,7 @@ int     philosophers(int argc, char **argv);
 int     init(int argc, char **argv, t_data *data);
 
 /* check_input.c */
+long    ft_atol(char *str, int *overflow);
 int     ft_atoi(char *str);
 int     check_input_digits(char **argv);
 int     check_input_valid(int argc, char **argv);
@@ -171,6 +180,8 @@ int     print_logs(t_data *data, long long delay);
 /* mutex_utils.c */
 int     lock_safely(pthread_mutex_t *mutex);
 int     unlock_safely(pthread_mutex_t *mutex);
+int     try_take_fork(t_mutex *fork);
+void    release_fork(t_mutex *fork);
 
 /* simulation_utils.c */
 int     dinner_is_over(t_data *data);

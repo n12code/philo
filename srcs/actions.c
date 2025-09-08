@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:12:59 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/08 15:51:28 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/08 19:23:49 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ int philos_eat(t_philo *philos)
     if (take_forks(philos))
         return (1);
     lock_safely(&philos->philo_mutex);
-    philos->last_meal = get_time();
+    philos->last_meal = get_time_us();
     philos->eating = 1;
-    philos->meal_end_time = get_time() + philos->data->time_to_eat;
+    philos->meal_end_time = get_time_us() / 1000LL + philos->data->time_to_eat;
     philos->meals_eaten++;
     unlock_safely(&philos->philo_mutex);
     log_action(philos->data, philos->id, EATING, GREEN);
@@ -33,43 +33,73 @@ int philos_eat(t_philo *philos)
 
 int take_forks(t_philo *philos)
 {
-    pthread_mutex_t *first_fork;
-	pthread_mutex_t *second_fork;
-	
-	if (philos->data->n_philos == 1)
-		return (handle_single_philo(philos));
-    if (philos->id < (philos->id + 1) % (int) philos->data->n_philos)
-	{
+    t_mutex *first_fork;
+    t_mutex *second_fork;
+    int first_taken = 0;
+    int second_taken = 0;
+    
+    if (philos->data->n_philos == 1)
+        return (handle_single_philo(philos));
+    
+    // Determine fork order to avoid deadlock
+    if (philos->left_fork < philos->right_fork)
+    {
         first_fork = philos->left_fork;
         second_fork = philos->right_fork;
     } 
-	else
-	{
+    else
+    {
         first_fork = philos->right_fork;
         second_fork = philos->left_fork;
     }
-    lock_safely(first_fork);
-    if (get_philos_state(philos->data))
-	{
-        unlock_safely(first_fork);
-        return (1);
+    
+    // Loop until both forks are acquired or simulation ends
+    while (!get_philos_state(philos->data))
+    {
+        // Try to take first fork
+        if (!first_taken && try_take_fork(first_fork))
+        {
+            first_taken = 1;
+            log_action(philos->data, philos->id, FORK, YELLOW);
+        }
+        
+        // If we have the first fork, try to take the second
+        if (first_taken && !second_taken && try_take_fork(second_fork))
+        {
+            second_taken = 1;
+            log_action(philos->data, philos->id, FORK, YELLOW);
+        }
+        
+        // If we have both forks, we're done
+        if (first_taken && second_taken)
+            return (0);
+        
+        // If simulation is stopping, release any fork we might have
+        if (get_philos_state(philos->data))
+        {
+            if (first_taken)
+                release_fork(first_fork);
+            if (second_taken)
+                release_fork(second_fork);
+            return (1);
+        }
+        
+        // Wait before retrying
+        usleep(FORK_RETRY_DELAY);
     }
-    log_action(philos->data, philos->id, FORK, YELLOW);
-    lock_safely(second_fork);
-    if (get_philos_state(philos->data))
-	{
-        unlock_safely(second_fork);
-        unlock_safely(first_fork);
-        return (1);
-    }
-    log_action(philos->data, philos->id, FORK, YELLOW);
-    return (0);
+    
+    // Clean up if simulation ended
+    if (first_taken)
+        release_fork(first_fork);
+    if (second_taken)
+        release_fork(second_fork);
+    return (1);
 }
 
 void drop_forks(t_philo *philos)
 {
-    unlock_safely(philos->right_fork);
-    unlock_safely(philos->left_fork);
+    release_fork(philos->right_fork);
+    release_fork(philos->left_fork);
 }
 
 int philos_think(t_philo *philos)

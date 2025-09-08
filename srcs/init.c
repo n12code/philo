@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:18:51 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/08 15:52:37 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/08 19:31:55 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,16 @@ int init_forks(t_data *data)
     i = 0;
     while (i < data->n_philos)
     {
-        pthread_mutex_init(&data->forks[i], NULL);
+        if (pthread_mutex_init(&data->forks[i].mutex, NULL) != 0)
+		{
+			while (i >= 0)
+			{
+				pthread_mutex_destroy(&data->forks[i].mutex);
+				i--;
+			}
+			return (1);
+		}
+        data->forks[i].status = 0;
         i++;
     }
     i = 0;
@@ -44,7 +53,7 @@ int init_philos(t_data *data)
     {
         philos[i].id = i;
         philos[i].meals_eaten = 0;
-        philos[i].last_meal = data->start_time / 1000LL;
+        philos[i].last_meal = data->start_time;
         philos[i].data = data;
         philos[i].eating = 0;
         philos[i].meal_end_time = 0;
@@ -57,7 +66,7 @@ int init_philos(t_data *data)
 
 int init_malloc(t_data *data)
 {
-    data->forks = malloc(data->n_philos * sizeof(pthread_mutex_t));
+    data->forks = malloc(data->n_philos * sizeof(t_mutex));
     if (!data->forks)
         return (1);
     data->philos = malloc(data->n_philos * sizeof(t_philo));

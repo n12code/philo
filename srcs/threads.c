@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:19:32 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/08 15:54:19 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/08 19:12:15 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int create_threads(t_data *data)
     {
         if (pthread_create(&philos[i].thread, NULL, &routine, &philos[i]))
 		{
+			change_philos_state(data);
 			data->i_philos = i;
             return (1);
 		}
@@ -78,6 +79,7 @@ int create_threads(t_data *data)
     {
         if (pthread_create(&data->monitors[i], NULL, &monitor_routine, &monitor_data[i]))
         {
+			change_philos_state(data);
 			data->i_monitors = i;
             return (1);
 		}
@@ -87,11 +89,17 @@ int create_threads(t_data *data)
 	if (data->n_meals != -1)
     {
         if (pthread_create(&data->completion_monitor, NULL, &completion_monitor_routine, data))
+		{
+			change_philos_state(data);
             return (1);
+		}
     }
 	data->i_comp_monitor = 1;
     if (pthread_create(&data->scribe, NULL, &scribe_routine, data))
-		return (1);
+	{
+		change_philos_state(data);
+        return (1);
+	}
 	data->i_scribe = 1;
     return (0);
 }
@@ -114,12 +122,12 @@ int join_threads(t_data *data)
             return (1);
         i++;
 	}
-	if (data->n_meals != -1 && data->i_comp_monitor > 0)
+	if (data->n_meals != -1 && data->i_comp_monitor != 0)
     {
         if (pthread_join(data->completion_monitor, NULL))
             return (1);
     }
-	if (data->i_scribe > 0)
+	if (data->i_scribe != 0)
 	{
 		if (pthread_join(data->scribe, NULL))
 			return (1);

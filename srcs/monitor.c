@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:16:15 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/08 15:51:28 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/08 19:24:25 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ int philo_died(t_philo *philo)
 {
     long long time_since_last_meal;
     
-    time_since_last_meal = get_time() - get_last_meal_time(philo);
-    if (time_since_last_meal >= philo->data->time_to_die && !get_eating_state(philo))
+    time_since_last_meal = get_time_us() - get_last_meal_time(philo);
+    if (time_since_last_meal >= philo->data->time_to_die * 1000LL && !get_eating_state(philo))
         return (1);
     return (0);
 }
@@ -72,47 +72,26 @@ void *monitor_routine(void *monitor_data_ptr)
     return (NULL);
 }
 
+#include <unistd.h>
+#include "philo.h"
+
 void *completion_monitor_routine(void *data_ptr)
 {
     t_data *data;
     size_t i;
-    int all_done;
     
-	data  = (t_data *)data_ptr;
+    data = (t_data *)data_ptr;
     if (data->n_meals == -1)
-        return (NULL);  
+        return (NULL);
+
     while (!get_philos_state(data))
     {
-        all_done = 1;
         i = 0;
-        while (i < data->n_philos)
-        {
-            if (get_meals_eaten(&data->philos[i]) < data->n_meals)
-            {
-                all_done = 0;
-                break;
-            }
+        while (i < data->n_philos && get_meals_eaten(&data->philos[i]) >= data->n_meals)
             i++;
-        }
-        if (all_done)
+        
+        if (i == data->n_philos)
         {
-            int someone_eating = 1;
-            while (someone_eating && !get_philos_state(data))
-            {
-                someone_eating = 0;
-                i = 0;
-                while (i < data->n_philos)
-                {
-                    if (get_eating_state(&data->philos[i]))
-                    {
-                        someone_eating = 1;
-                        break;
-                    }
-                    i++;
-                }
-                if (someone_eating)
-                    usleep(1000);
-            }
             change_philos_state(data);
             break;
         }

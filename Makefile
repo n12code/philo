@@ -6,7 +6,7 @@
 #    By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/28 11:10:39 by nbodin            #+#    #+#              #
-#    Updated: 2025/08/30 14:11:38 by nbodin           ###   ########lyon.fr    #
+#    Updated: 2025/09/08 19:33:45 by nbodin           ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ OBJ_DIR = .obj
 DEP_DIR = .dep
 
 CC		= cc
-CFLAGS	= -g3 -Wall -Wextra -Werror
+CFLAGS	= -Wall -Wextra -Werror
 D_FLAGS = -MMD -MP -MF $(DEP_DIR)/$*.d
 I_FLAGS = -I$(INC_DIR)
 CF		= $(CC) $(CFLAGS) $(I_FLAGS)
@@ -38,7 +38,6 @@ $(NAME): $(OBJS)
 	@$(CF) $^ -o $@
 	@echo "program created\n"
 
-bonus: $(NAME)
 
 $(OBJ_DIR)/%.o: %.c | $(OBJ_DIR) $(DEP_DIR)
 	@echo "compilation $< $@"
@@ -69,6 +68,6 @@ val: all
 
 -include $(DEPS)
 
-.PHONY: all clean fclean re debug help
+.PHONY: all clean fclean re val
 
 FORCE:
