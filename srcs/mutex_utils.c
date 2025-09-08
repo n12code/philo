@@ -6,11 +6,11 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:16:45 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/07 11:16:53 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/08 15:51:28 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_2.h"
+#include "philo.h"
 
 int lock_safely(pthread_mutex_t *mutex)
 {

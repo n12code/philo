@@ -6,11 +6,11 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:15:59 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/07 11:16:01 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/08 15:51:28 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_2.h"
+#include "philo.h"
 
 int print_logs(t_data *data, long long delay)
 {

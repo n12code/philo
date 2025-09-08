@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   threads_2.c                                        :+:      :+:    :+:   */
+/*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:19:32 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/07 16:29:26 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/08 15:54:19 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_2.h"
+#include "philo.h"
 
 void *routine(void *philos_pointer)
 {
@@ -55,7 +55,7 @@ int create_threads(t_data *data)
         return (1);
     data->monitor_data = monitor_data;
     i = 0;
-    while (i < (size_t)data->nbr_monitors)
+    while (i < (size_t) data->nbr_monitors)
     {
         monitor_data[i].id = i;
         monitor_data[i].nbr_monitors = data->nbr_monitors;
@@ -63,26 +63,36 @@ int create_threads(t_data *data)
         i++;
     }
     i = 0;
-    while (i < data->n_philos)
+    while (i < (size_t) data->n_philos)
     {
         if (pthread_create(&philos[i].thread, NULL, &routine, &philos[i]))
+		{
+			data->i_philos = i;
             return (1);
+		}
         i++;
     }
+	data->i_philos = data->n_philos;
     i = 0;
-    while (i < (size_t)data->nbr_monitors)
+    while (i < (size_t) data->nbr_monitors)
     {
         if (pthread_create(&data->monitors[i], NULL, &monitor_routine, &monitor_data[i]))
+        {
+			data->i_monitors = i;
             return (1);
+		}
         i++;
 	}
+	data->i_monitors = data->nbr_monitors;
 	if (data->n_meals != -1)
     {
         if (pthread_create(&data->completion_monitor, NULL, &completion_monitor_routine, data))
             return (1);
     }
+	data->i_comp_monitor = 1;
     if (pthread_create(&data->scribe, NULL, &scribe_routine, data))
-        return (1);
+		return (1);
+	data->i_scribe = 1;
     return (0);
 }
 
@@ -91,26 +101,28 @@ int join_threads(t_data *data)
     size_t i;
     
     i = 0;
-    while (i < data->n_philos)
+    while (i < (size_t) data->i_philos)
 	{
         if (pthread_join(data->philos[i].thread, NULL))
             return (1);
         i++;
     }
     i = 0;
-    while (i < (size_t)data->nbr_monitors)
+    while (i < (size_t) data->i_monitors)
     {
         if (pthread_join(data->monitors[i], NULL))
             return (1);
         i++;
 	}
-	if (data->n_meals != -1)
+	if (data->n_meals != -1 && data->i_comp_monitor > 0)
     {
         if (pthread_join(data->completion_monitor, NULL))
             return (1);
     }
-    if (pthread_join(data->scribe, NULL))
-        return (1);
-    
+	if (data->i_scribe > 0)
+	{
+		if (pthread_join(data->scribe, NULL))
+			return (1);
+	}
     return (0);
 }

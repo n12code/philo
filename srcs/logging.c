@@ -6,11 +6,11 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:14:10 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/07 16:27:05 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/08 15:51:28 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_2.h"
+#include "philo.h"
 
 t_log *create_log(long long timestamp, int philo_id, const char *action, const char *color)
 {

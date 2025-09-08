@@ -6,11 +6,11 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:17:33 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/07 16:21:16 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/08 15:51:28 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_2.h"
+#include "philo.h"
 
 int dinner_is_over(t_data *data)
 {

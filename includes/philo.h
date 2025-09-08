@@ -67,6 +67,7 @@ typedef struct s_monitoring_data {
     struct s_data   *data;
 } t_monitoring_data;
 
+
 typedef struct s_data {
     size_t          n_philos;
     long long       time_to_die;
@@ -92,7 +93,11 @@ typedef struct s_data {
     int             nbr_monitors;
     t_monitoring_data *monitor_data;
 
-    t_philo         *philos;
+    int	i_philos;
+	int	i_monitors;
+	int	i_comp_monitor;
+	int	i_scribe;
+	t_philo         *philos;
     t_log           *log_lst;
     int             someone_died;
 } t_data;

@@ -6,11 +6,11 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 10:25:08 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/07 11:37:44 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/08 15:51:28 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_2.h"
+#include "philo.h"
 
 int	ft_atoi(char *str)
 {

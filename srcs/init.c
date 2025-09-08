@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_2.c                                           :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:18:51 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/07 16:26:53 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/08 15:52:37 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_2.h"
+#include "philo.h"
 
 int init_forks(t_data *data)
 {
@@ -82,6 +82,10 @@ int init_data(int argc, char **argv, t_data *data)
     data->stop = 0;
     data->log_lst = NULL;
     data->monitor_data = NULL;
+	data->i_monitors = 0;
+	data->i_comp_monitor = 0;
+	data->i_scribe = 0;
+	data->i_philos = 0;
     pthread_mutex_init(&data->print_lock, NULL);
     pthread_mutex_init(&data->last_meal_lock, NULL);
     pthread_mutex_init(&data->meals_eaten_lock, NULL);

@@ -6,11 +6,11 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 10:00:39 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/07 11:37:22 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/08 15:57:34 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_2.h"
+#include "philo.h"
 
 int	init(int argc, char **argv, t_data *data)
 {
@@ -45,8 +45,7 @@ int	check_input(int argc, char **argv)
 
 int	threads(t_data *data)
 {
-	if (create_threads(data))
-		return (1);
+	create_threads(data);
 	if (join_threads(data))
 		return (1);
 	return (0);
