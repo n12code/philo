@@ -54,7 +54,7 @@ int	threads(t_data *data)
 int	philosophers(int argc, char **argv)
 {
 	t_data	data;
-	
+
 	if (init(argc, argv, &data))
 	{
 		free_data(&data);
