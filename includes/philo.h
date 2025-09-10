@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:22:55 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/09 18:23:36 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/10 19:47:38 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_mutex
 {
 	pthread_mutex_t		mutex;
 	int					status; // 0 available, 1 taken
+	int					owner; // -1 available, id taken
 }						t_mutex;
 
 /* Log structure for advanced logging system */
@@ -101,7 +102,7 @@ typedef struct s_data
 	long long			start_time;
 	int					stop;
 
-	t_mutex				*forks;
+	t_mutex				forks[200];
 	pthread_mutex_t		print_lock;
 	pthread_mutex_t		last_meal_lock;
 	pthread_mutex_t		meals_eaten_lock;
@@ -110,17 +111,17 @@ typedef struct s_data
 	pthread_mutex_t		log_mutex;
 	pthread_mutex_t		death_mutex;
 
-	pthread_t			*monitors;
+	pthread_t			monitors[10];
 	pthread_t			completion_monitor;
 	pthread_t			scribe;
 	int					nbr_monitors;
-	t_monitoring_data	*monitor_data;
+	t_monitoring_data	monitor_data[10];
 
 	int					i_philos;
 	int					i_monitors;
 	int					i_comp_monitor;
 	int					i_scribe;
-	t_philo				*philos;
+	t_philo				philos[200];
 	t_log				*log_lst;
 	int					someone_died;
 }						t_data;
@@ -185,7 +186,7 @@ void					*completion_monitor_routine(void *data_ptr);
 t_log					*create_log(long long timestamp, int philo_id,
 							const char *action, const char *color);
 t_log					*add_log(t_log *log_lst, t_log *log);
-void					log_action(t_data *data, int philo_id,
+int					log_action(t_data *data, int philo_id,
 							const char *action, const char *color);
 int						display_log(const t_log *log);
 void					free_log_lst(t_log *log_lst);
@@ -197,7 +198,7 @@ int						print_logs(t_data *data, long long delay);
 /* mutex_utils.c */
 int						lock_safely(pthread_mutex_t *mutex);
 int						unlock_safely(pthread_mutex_t *mutex);
-int						try_take_fork(t_mutex *fork);
+int						try_take_fork(t_mutex *fork, int philo_id);
 void					release_fork(t_mutex *fork);
 
 /* simulation_utils.c */

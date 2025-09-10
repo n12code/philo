@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:18:06 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/09 18:30:10 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/10 19:55:54 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	ft_usleep_precise(long long sleep_time_us, t_data *data)
 
 int	handle_single_philo(t_philo *philos)
 {
-	try_take_fork(philos->left_fork);
+	try_take_fork(philos->left_fork, philos->id);
 	log_action(philos->data, philos->id, FORK, YELLOW);
 	while (!get_philos_state(philos->data))
 		usleep(1000);
@@ -66,29 +66,17 @@ void	free_data(t_data *data)
 	size_t	i;
 
 	i = 0;
-	if (data->forks)
+	while (i < data->n_philos)
 	{
-		while (i < data->n_philos)
-		{
-			pthread_mutex_destroy(&data->forks[i].mutex);
-			i++;
-		}
-		free(data->forks);
+		pthread_mutex_destroy(&data->forks[i].mutex);
+		i++;
 	}
-	if (data->philos)
+	i = 0;
+	while (i < data->n_philos)
 	{
-		i = 0;
-		while (i < data->n_philos)
-		{
-			pthread_mutex_destroy(&data->philos[i].philo_mutex);
-			i++;
-		}
-		free(data->philos);
+		pthread_mutex_destroy(&data->philos[i].philo_mutex);
+		i++;
 	}
-	if (data->monitors)
-		free(data->monitors);
-	if (data->monitor_data)
-		free(data->monitor_data);
 	pthread_mutex_destroy(&data->last_meal_lock);
 	pthread_mutex_destroy(&data->meals_eaten_lock);
 	pthread_mutex_destroy(&data->stop_lock);

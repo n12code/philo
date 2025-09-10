@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:14:10 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/09 18:26:37 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/10 19:57:46 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_log	*add_log(t_log *log_lst, t_log *log)
 	}
 }
 
-void	log_action(t_data *data, int philo_id, const char *action,
+int	log_action(t_data *data, int philo_id, const char *action,
 		const char *color)
 {
 	t_log		*log;
@@ -65,10 +65,14 @@ void	log_action(t_data *data, int philo_id, const char *action,
 	timestamp = (get_time_us() - data->start_time) / 1000LL;
 	log = create_log(timestamp, philo_id, action, color);
 	if (!log)
-		return ;
+	{
+		change_philos_state(data);
+		return (1);
+	}
 	lock_safely(&data->log_mutex);
 	data->log_lst = add_log(data->log_lst, log);
 	unlock_safely(&data->log_mutex);
+	return (0);
 }
 
 int	display_log(const t_log *log)

@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:16:15 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/09 18:29:27 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/10 19:55:46 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	*monitor_routine(void *monitor_data_ptr)
 		while (i < (int)data->n_philos)
 		{
 			if (check_philosopher_status(data, i, &death_detected) == 0)
-				break ;
+				return (NULL) ;
 			i += monitor_data->nbr_monitors;
 		}
 		usleep(MONITOR_SLEEP);
