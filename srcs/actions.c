@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:12:59 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/10 19:55:38 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/10 22:08:54 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,8 @@ int	philos_think(t_philo *philos)
 	if (get_philos_state(philos->data))
 		return (1);
 
-	log_action(philos->data, philos->id, THINKING, CYAN);
+	if (log_action(philos->data, philos->id, THINKING, CYAN))
+		return (1);
 	think_time = (philos->data->time_to_eat - philos->data->time_to_sleep) / 2;
 	if (think_time <= 0)
 		think_time = 1;
@@ -137,7 +138,7 @@ int	philos_sleep(t_philo *philos)
 
 	if (get_philos_state(philos->data))
 		return (1);
-	log_action(philos->data, philos->id, SLEEPING, BLUE);
+	unlock_safely(&philos->data->print_lock);
 	lock_safely(&philos->philo_mutex);
 	wake_up_time = get_time() + philos->data->time_to_sleep;
 	philos->wake_up_time = wake_up_time;

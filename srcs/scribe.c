@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:15:59 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/09 19:24:16 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/10 22:01:39 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	*scribe_routine(void *data_ptr)
 		return (NULL);
 	died = 0;
 	ft_usleep_precise(SCRIBE_TIME_GAP * 1000LL, data);
-	while (!died && !dinner_is_over(data))
+	while (!died && !dinner_is_over(data) && !get_philos_state(data))
 	{
 		died = print_logs(data, SCRIBE_TIME_GAP);
 		ft_usleep_precise(SCRIBE_SLEEP_TIME * 1000LL, data);
