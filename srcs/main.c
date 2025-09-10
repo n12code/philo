@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 10:00:39 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/08 18:50:34 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/10 23:58:19 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 int	init(int argc, char **argv, t_data *data)
 {
 	if (init_data(argc, argv, data))
+		return (1);
+	if (init_monitor_data(data))
 		return (1);
 	if (init_forks(data))
 		return (1);

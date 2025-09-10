@@ -6,18 +6,11 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:16:15 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/10 19:55:46 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/10 22:57:04 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	change_philos_state(t_data *data)
-{
-	lock_safely(&data->stop_lock);
-	data->stop = 1;
-	unlock_safely(&data->stop_lock);
-}
 
 int	philo_died(t_philo *philo)
 {
@@ -66,7 +59,7 @@ void	*monitor_routine(void *monitor_data_ptr)
 		while (i < (int)data->n_philos)
 		{
 			if (check_philosopher_status(data, i, &death_detected) == 0)
-				return (NULL) ;
+				return (NULL);
 			i += monitor_data->nbr_monitors;
 		}
 		usleep(MONITOR_SLEEP);
@@ -96,14 +89,4 @@ void	*completion_monitor_routine(void *data_ptr)
 		usleep(MONITOR_SLEEP);
 	}
 	return (NULL);
-}
-
-int	get_nbr_chunks(int num_philosophers)
-{
-	int	chunks;
-
-	chunks = num_philosophers / CHUNK_SIZE;
-	if (num_philosophers % CHUNK_SIZE != 0)
-		chunks++;
-	return (chunks);
 }

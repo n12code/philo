@@ -6,11 +6,25 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:18:51 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/10 22:29:21 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/10 23:58:13 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	init_monitor_data(t_data *data)
+{
+	int	i;
+
+	i = -1;
+	while (++i < data->nbr_monitors)
+	{
+		data->monitor_data[i].id = i;
+		data->monitor_data[i].nbr_monitors = data->nbr_monitors;
+		data->monitor_data[i].data = data;
+	}
+	return (0);
+}
 
 int	init_forks(t_data *data)
 {
@@ -21,12 +35,8 @@ int	init_forks(t_data *data)
 	{
 		if (pthread_mutex_init(&data->forks[i].mutex, NULL) != 0)
 		{
-			i--;
-			while (i >= 0)
-			{
+			while (--i >= 0)
 				pthread_mutex_destroy(&data->forks[i].mutex);
-				i--;
-			}
 			return (1);
 		}
 		data->forks[i].status = 0;
@@ -41,6 +51,16 @@ int	init_forks(t_data *data)
 		i++;
 	}
 	return (0);
+}
+
+int	get_nbr_chunks(int num_philosophers)
+{
+	int	chunks;
+
+	chunks = num_philosophers / CHUNK_SIZE;
+	if (num_philosophers % CHUNK_SIZE != 0)
+		chunks++;
+	return (chunks);
 }
 
 int	init_philos(t_data *data)

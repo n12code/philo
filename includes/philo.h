@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:22:55 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/10 19:47:38 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/10 23:54:57 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,7 @@ int						init_forks(t_data *data);
 int						init_malloc(t_data *data);
 int						init_philos(t_data *data);
 int						init_data(int argc, char **argv, t_data *data);
+int						init_monitor_data(t_data *data);
 
 /* threads.c */
 int						join_threads(t_data *data);
@@ -167,6 +168,16 @@ int						get_eating_state(t_philo *philo);
 long long				get_last_meal_time(t_philo *philo);
 int						get_someone_died(t_data *data);
 
+/* forks.c */
+int						check_owner(t_philo *philos, t_mutex *fork);
+void					assign_forks(t_philo *philos,
+							t_mutex **first_fork, t_mutex **second_fork);
+void					try_to_release_forks(t_philo *philos,
+							t_mutex **first_fork, t_mutex **second_fork);
+int						take_forks_loop(t_philo *philos,
+							t_mutex **first_fork, t_mutex **second_fork);
+void					drop_forks(t_philo *philos);
+
 /* actions.c */
 int						philos_eat(t_philo *philos);
 int						take_forks(t_philo *philos);
@@ -186,7 +197,7 @@ void					*completion_monitor_routine(void *data_ptr);
 t_log					*create_log(long long timestamp, int philo_id,
 							const char *action, const char *color);
 t_log					*add_log(t_log *log_lst, t_log *log);
-int					log_action(t_data *data, int philo_id,
+int						log_action(t_data *data, int philo_id,
 							const char *action, const char *color);
 int						display_log(const t_log *log);
 void					free_log_lst(t_log *log_lst);
@@ -203,6 +214,5 @@ void					release_fork(t_mutex *fork);
 
 /* simulation_utils.c */
 int						dinner_is_over(t_data *data);
-int						is_simulation_over(t_data *data);
 
 #endif

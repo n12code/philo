@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sim_utils.c                                        :+:      :+:    :+:   */
+/*   utils_bis.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:17:33 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/09 18:27:12 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/10 23:00:36 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,20 @@ int	dinner_is_over(t_data *data)
 	return (1);
 }
 
-int	is_simulation_over(t_data *data)
+void	change_philos_state(t_data *data)
 {
-	int	stop;
-	int	dinner_over;
+	lock_safely(&data->stop_lock);
+	data->stop = 1;
+	unlock_safely(&data->stop_lock);
+}
 
-	stop = get_philos_state(data);
-	if (stop)
-		return (1);
-	dinner_over = dinner_is_over(data);
-	return (dinner_over);
+int	handle_single_philo(t_philo *philos)
+{
+	try_take_fork(philos->left_fork, philos->id);
+	log_action(philos->data, philos->id, FORK, YELLOW);
+	while (!get_philos_state(philos->data))
+		usleep(1000);
+	release_fork(philos->left_fork);
+	change_philos_state(philos->data);
+	return (1);
 }

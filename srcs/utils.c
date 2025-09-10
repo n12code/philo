@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:18:06 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/10 21:56:33 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/10 23:00:28 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,17 +48,6 @@ void	ft_usleep_precise(long long sleep_time_us, t_data *data)
 	usleep(sleep_time_us - 100);
 	while (!get_philos_state(data) && get_time_us() < target)
 		;
-}
-
-int	handle_single_philo(t_philo *philos)
-{
-	try_take_fork(philos->left_fork, philos->id);
-	log_action(philos->data, philos->id, FORK, YELLOW);
-	while (!get_philos_state(philos->data))
-		usleep(1000);
-	release_fork(philos->left_fork);
-	change_philos_state(philos->data);
-	return (1);
 }
 
 void	free_data(t_data *data)

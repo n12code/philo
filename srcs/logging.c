@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:14:10 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/10 22:09:25 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/10 22:46:38 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_log	*create_log(long long timestamp, int philo_id, const char *action,
 {
 	t_log	*log;
 
-	log = NULL;//malloc(sizeof(t_log));
+	log = malloc(sizeof(t_log));
 	if (!log)
 		return (NULL);
 	memset(log, 0, sizeof(t_log));
