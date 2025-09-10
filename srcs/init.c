@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:18:51 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/10 19:47:31 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/10 22:29:21 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 int	init_forks(t_data *data)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
-	while (i < data->n_philos)
+	while (i < (int) data->n_philos)
 	{
 		if (pthread_mutex_init(&data->forks[i].mutex, NULL) != 0)
 		{
@@ -34,7 +34,7 @@ int	init_forks(t_data *data)
 		i++;
 	}
 	i = 0;
-	while (i < data->n_philos)
+	while (i < (int) data->n_philos)
 	{
 		data->philos[i].left_fork = &data->forks[i];
 		data->philos[i].right_fork = &data->forks[(i + 1) % data->n_philos];

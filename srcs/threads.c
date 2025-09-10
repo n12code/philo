@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:19:32 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/10 22:09:10 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/10 22:31:22 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int	join_threads(t_data *data)
 	{
 		if (pthread_join(data->monitors[i], NULL))
 			return (1);
-			lock_safely(&data->print_lock);
+		lock_safely(&data->print_lock);
 	}
 	if (data->n_meals != -1 && data->i_comp_monitor != 0)
 	{
