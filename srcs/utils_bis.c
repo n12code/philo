@@ -6,11 +6,12 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:17:33 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/11 09:41:51 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/11 18:00:09 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+#include <unistd.h>
 
 int	dinner_is_over(t_data *data)
 {
@@ -32,9 +33,9 @@ int	dinner_is_over(t_data *data)
 
 void	change_philos_state(t_data *data)
 {
-	lock_safely(&data->stop_lock);
+	pthread_mutex_lock(&data->stop_lock.mutex);
 	data->stop = 1;
-	unlock_safely(&data->stop_lock);
+	pthread_mutex_unlock(&data->stop_lock.mutex);
 }
 
 int	handle_single_philo(t_philo *philos)
@@ -61,5 +62,21 @@ int	get_nbr_chunks(int num_philosophers)
 void	destroy_mutex_safely(t_mutex *mutex)
 {
 	if (mutex->init == 1)
-		pthread_mutex_destroy(mutex);
+		pthread_mutex_destroy(&mutex->mutex);
+}
+
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	int		i;
+
+	i = 0;
+	if (n == 0)
+		return (0);
+	while (s1[i] && s2[i] && n - 1
+		&& (unsigned char) s1[i] == (unsigned char) s2[i])
+	{
+		i++;
+		n--;
+	}
+	return ((unsigned char) s1[i] - (unsigned char) s2[i]);
 }

@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 23:00:51 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/10 23:59:16 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/11 16:42:49 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ int	check_owner(t_philo *philos, t_mutex *fork)
 	int	owner;
 
 	owner = 0;
-	lock_safely(&philos->philo_mutex);
+	pthread_mutex_lock(&fork->mutex);
 	if (philos->id == fork->owner)
 		owner = 1;
-	unlock_safely(&philos->philo_mutex);
+	pthread_mutex_unlock(&fork->mutex);
 	return (owner);
 }
 
@@ -59,10 +59,7 @@ int	take_forks_loop(t_philo *philos,
 		return (0);
 	if (get_philos_state(philos->data))
 	{
-		if (check_owner(philos, *first_fork))
-			release_fork(*first_fork);
-		if (check_owner(philos, *second_fork))
-			release_fork(*second_fork);
+		try_to_release_forks(philos, first_fork, second_fork);
 		return (1);
 	}
 	return (2);

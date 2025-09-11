@@ -6,11 +6,12 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:15:59 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/10 22:01:39 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/11 17:59:17 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+#include <stdlib.h>
 
 void	update_current_prev(t_log **current, t_log **prev)
 {
@@ -26,24 +27,24 @@ int	print_logs(t_data *data, long long delay)
 	int			died;
 	long long	now;
 
-	lock_safely(&data->log_mutex);
+	pthread_mutex_lock(&data->log_mutex.mutex);
 	now = (get_time_us() - data->start_time) / 1000LL;
 	current = data->log_lst;
 	prev = NULL;
 	if (current == NULL)
 	{
-		unlock_safely(&data->log_mutex);
+		pthread_mutex_unlock(&data->log_mutex.mutex);
 		return (0);
 	}
 	died = 0;
 	while (current != NULL && !died && current->timestamp <= now - delay)
 	{
 		display_log(current);
-		died = (strncmp(current->action, "died", 4) == 0);
+		died = (ft_strncmp(current->action, "died", 4) == 0);
 		update_current_prev(&current, &prev);
 	}
 	data->log_lst = current;
-	unlock_safely(&data->log_mutex);
+	pthread_mutex_unlock(&data->log_mutex.mutex);
 	return (died);
 }
 

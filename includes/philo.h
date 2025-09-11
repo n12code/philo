@@ -6,22 +6,15 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:22:55 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/11 09:38:23 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/11 17:59:59 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# include <pthread.h>
 # include <stddef.h>
-# include <stdint.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include <sys/time.h>
-# include <sys/types.h>
-# include <unistd.h>
+# include <pthread.h>
 
 /* Color definitions for logging */
 # define RED "\x1b[31m"
@@ -143,10 +136,12 @@ int						check_input_valid(int argc, char **argv);
 
 /* init.c */
 int						init_forks(t_data *data);
-int						init_malloc(t_data *data);
 int						init_philos(t_data *data);
 int						init_data(int argc, char **argv, t_data *data);
 int						init_monitor_data(t_data *data);
+int						init_mutex_safely(t_mutex *mutex);
+
+
 
 /* threads.c */
 int						join_threads(t_data *data);
@@ -199,7 +194,7 @@ t_log					*create_log(long long timestamp, int philo_id,
 t_log					*add_log(t_log *log_lst, t_log *log);
 int						log_action(t_data *data, int philo_id,
 							const char *action, const char *color);
-int						display_log(const t_log *log);
+void					display_log(const t_log *log);
 void					free_log_lst(t_log *log_lst);
 
 /* scribe.c */
@@ -207,12 +202,17 @@ void					*scribe_routine(void *data_ptr);
 int						print_logs(t_data *data, long long delay);
 
 /* mutex_utils.c */
-int						lock_safely(pthread_mutex_t *mutex);
-int						unlock_safely(pthread_mutex_t *mutex);
 int						try_take_fork(t_mutex *fork, int philo_id);
 void					release_fork(t_mutex *fork);
 
 /* simulation_utils.c */
 int						dinner_is_over(t_data *data);
+void	destroy_mutex_safely(t_mutex *mutex);
+void	*ft_memset(void *s, int c, size_t n);
+size_t	ft_strlcpy(char *dst, const char *src, int size);
+int	ft_strncmp(const char *s1, const char *s2, size_t n);
+
+
+
 
 #endif

@@ -6,11 +6,12 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:16:15 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/10 22:57:04 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/11 17:57:44 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+#include <unistd.h>
 
 int	philo_died(t_philo *philo)
 {

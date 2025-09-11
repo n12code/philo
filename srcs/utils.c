@@ -6,11 +6,13 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:18:06 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/11 09:58:37 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/11 17:57:12 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+#include <sys/time.h>
+#include <unistd.h>
 
 long long	get_time_us(void)
 {
@@ -57,7 +59,7 @@ void	free_data(t_data *data)
 	i = 0;
 	while (i < data->n_philos)
 	{
-		destroy_mutex_safely(&data->forks[i].mutex);
+		destroy_mutex_safely(&data->forks[i]);
 		i++;
 	}
 	i = 0;
@@ -75,3 +77,40 @@ void	free_data(t_data *data)
 	destroy_mutex_safely(&data->death_mutex);
 	free_log_lst(data->log_lst);
 }
+
+void	*ft_memset(void *s, int c, size_t n)
+{
+	unsigned char	*cs;
+	size_t			i;
+
+	cs = (unsigned char *) s;
+	i = 0;
+	while (n--)
+	{
+		cs[i] = (unsigned char) c;
+		i++;
+	}
+	return (cs);
+}
+
+size_t	ft_strlcpy(char *dst, const char *src, int size)
+{
+	size_t	len_src;
+	int		i;
+
+	len_src = 0;
+	i = 0;
+	while (src[len_src])
+		len_src++;
+	if (size <= 0)
+		return (len_src);
+	while (src[i] && size - 1)
+	{
+		dst[i] = src[i];
+		i++;
+		size--;
+	}
+	dst[i] = 0;
+	return (len_src);
+}
+

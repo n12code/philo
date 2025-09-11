@@ -6,11 +6,13 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:14:10 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/10 22:46:38 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/11 17:58:59 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 t_log	*create_log(long long timestamp, int philo_id, const char *action,
 		const char *color)
@@ -20,11 +22,11 @@ t_log	*create_log(long long timestamp, int philo_id, const char *action,
 	log = malloc(sizeof(t_log));
 	if (!log)
 		return (NULL);
-	memset(log, 0, sizeof(t_log));
+	ft_memset(log, 0, sizeof(t_log));
 	log->timestamp = timestamp;
 	log->philo_id = philo_id;
-	strcpy(log->action, action);
-	strcpy(log->color, color);
+	ft_strlcpy(log->action, action, sizeof(log->action));
+	ft_strlcpy(log->color, color, sizeof(log->color));
 	log->next = NULL;
 	return (log);
 }
@@ -70,16 +72,16 @@ int	log_action(t_data *data, int philo_id, const char *action,
 		change_philos_state(data);
 		return (1);
 	}
-	lock_safely(&data->log_mutex);
+	pthread_mutex_lock(&data->log_mutex.mutex);
 	data->log_lst = add_log(data->log_lst, log);
-	unlock_safely(&data->log_mutex);
+	pthread_mutex_unlock(&data->log_mutex.mutex);
 	return (0);
 }
 
-int	display_log(const t_log *log)
+void	display_log(const t_log *log)
 {
-	return (printf("%s%lld %d %s%s\n", log->color, log->timestamp, log->philo_id
-			+ 1, log->action, RESET));
+	printf("%s%lld %d %s%s\n", log->color, log->timestamp, log->philo_id
+			+ 1, log->action, RESET);
 }
 
 void	free_log_lst(t_log *log_lst)
