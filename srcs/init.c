@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:18:51 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/10 23:58:13 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/11 10:11:11 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,19 +53,9 @@ int	init_forks(t_data *data)
 	return (0);
 }
 
-int	get_nbr_chunks(int num_philosophers)
-{
-	int	chunks;
-
-	chunks = num_philosophers / CHUNK_SIZE;
-	if (num_philosophers % CHUNK_SIZE != 0)
-		chunks++;
-	return (chunks);
-}
-
 int	init_philos(t_data *data)
 {
-	size_t	i;
+	int	i;
 	t_philo	*philos;
 
 	i = 0;
@@ -80,10 +70,22 @@ int	init_philos(t_data *data)
 		philos[i].eating = 0;
 		philos[i].meal_end_time = 0;
 		philos[i].wake_up_time = 0;
-		pthread_mutex_init(&philos[i].philo_mutex, NULL);
+		if (init_mutex_safely(&data->philos[i].philo_mutex.mutex))
+			return (1);
 		i++;
 	}
 	return (0);
+}
+
+int	init_mutex_safely(t_mutex *mutex)
+{
+	mutex->init = 0;
+	if (pthread_mutex_init(mutex, NULL) == 0)
+	{
+		mutex->init = 1;
+		return (0);
+	}
+	return (1);
 }
 
 int	init_data(int argc, char **argv, t_data *data)
@@ -102,12 +104,12 @@ int	init_data(int argc, char **argv, t_data *data)
 	data->i_scribe = 0;
 	data->i_philos = 0;
 	data->nbr_monitors = get_nbr_chunks(data->n_philos);
-	pthread_mutex_init(&data->print_lock, NULL);
-	pthread_mutex_init(&data->last_meal_lock, NULL);
-	pthread_mutex_init(&data->meals_eaten_lock, NULL);
-	pthread_mutex_init(&data->stop_lock, NULL);
-	pthread_mutex_init(&data->eating_lock, NULL);
-	pthread_mutex_init(&data->log_mutex, NULL);
-	pthread_mutex_init(&data->death_mutex, NULL);
+	if (init_mutex_safely(&data->print_lock.mutex)
+		|| init_mutex_safely(&data->last_meal_lock.mutex)
+		|| init_mutex_safely(&data->meals_eaten_lock.mutex)
+		|| init_mutex_safely(&data->eating_lock.mutex)
+		|| init_mutex_safely(&data->log_mutex.mutex)
+		|| init_mutex_safely(&data->death_mutex.mutex))
+			return (1);
 	return (0);
 }

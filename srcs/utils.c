@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:18:06 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/10 23:00:28 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/11 09:58:37 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,21 +57,21 @@ void	free_data(t_data *data)
 	i = 0;
 	while (i < data->n_philos)
 	{
-		pthread_mutex_destroy(&data->forks[i].mutex);
+		destroy_mutex_safely(&data->forks[i].mutex);
 		i++;
 	}
 	i = 0;
 	while (i < data->n_philos)
 	{
-		pthread_mutex_destroy(&data->philos[i].philo_mutex);
+		destroy_mutex_safely(&data->philos[i].philo_mutex);
 		i++;
 	}
-	pthread_mutex_destroy(&data->last_meal_lock);
-	pthread_mutex_destroy(&data->meals_eaten_lock);
-	pthread_mutex_destroy(&data->stop_lock);
-	pthread_mutex_destroy(&data->print_lock);
-	pthread_mutex_destroy(&data->eating_lock);
-	pthread_mutex_destroy(&data->log_mutex);
-	pthread_mutex_destroy(&data->death_mutex);
+	destroy_mutex_safely(&data->last_meal_lock);
+	destroy_mutex_safely(&data->meals_eaten_lock);
+	destroy_mutex_safely(&data->stop_lock);
+	destroy_mutex_safely(&data->print_lock);
+	destroy_mutex_safely(&data->eating_lock);
+	destroy_mutex_safely(&data->log_mutex);
+	destroy_mutex_safely(&data->death_mutex);
 	free_log_lst(data->log_lst);
 }

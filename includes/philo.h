@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 18:22:55 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/10 23:54:57 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/11 09:38:23 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ struct	s_data;
 /* Mutex structure with status tracking */
 typedef struct s_mutex
 {
-	pthread_mutex_t		mutex;
-	int					status; // 0 available, 1 taken
-	int					owner; // -1 available, id taken
+	pthread_mutex_t		mutex; 
+	int					owner; // -1 available, id taken, only for forks
+	int					init; //0 un-initalized, 1 initialized
 }						t_mutex;
 
 /* Log structure for advanced logging system */
@@ -75,7 +75,7 @@ typedef struct s_philo
 	long long			wake_up_time;
 
 	pthread_t			thread;
-	pthread_mutex_t		philo_mutex;
+	t_mutex				philo_mutex;
 
 	t_mutex				*left_fork;
 	t_mutex				*right_fork;
@@ -103,13 +103,13 @@ typedef struct s_data
 	int					stop;
 
 	t_mutex				forks[200];
-	pthread_mutex_t		print_lock;
-	pthread_mutex_t		last_meal_lock;
-	pthread_mutex_t		meals_eaten_lock;
-	pthread_mutex_t		stop_lock;
-	pthread_mutex_t		eating_lock;
-	pthread_mutex_t		log_mutex;
-	pthread_mutex_t		death_mutex;
+	t_mutex				last_meal_lock;
+	t_mutex				print_lock;
+	t_mutex				meals_eaten_lock;
+	t_mutex				stop_lock;
+	t_mutex				eating_lock;
+	t_mutex				log_mutex;
+	t_mutex				death_mutex;
 
 	pthread_t			monitors[10];
 	pthread_t			completion_monitor;

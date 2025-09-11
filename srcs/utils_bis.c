@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:17:33 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/10 23:00:36 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/11 09:41:51 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,20 @@ int	handle_single_philo(t_philo *philos)
 	release_fork(philos->left_fork);
 	change_philos_state(philos->data);
 	return (1);
+}
+
+int	get_nbr_chunks(int num_philosophers)
+{
+	int	chunks;
+
+	chunks = num_philosophers / CHUNK_SIZE;
+	if (num_philosophers % CHUNK_SIZE != 0)
+		chunks++;
+	return (chunks);
+}
+
+void	destroy_mutex_safely(t_mutex *mutex)
+{
+	if (mutex->init == 1)
+		pthread_mutex_destroy(mutex);
 }
