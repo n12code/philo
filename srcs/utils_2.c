@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:18:06 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/11 17:57:12 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/21 17:05:48 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,6 @@ long long	get_time_us(void)
 	if (gettimeofday(&tv, NULL))
 		return (0);
 	return ((tv.tv_sec * 1000000LL) + tv.tv_usec);
-}
-
-long long	get_time(void)
-{
-	return (get_time_us() / 1000LL);
 }
 
 void	sleep_till(long long target_time)
@@ -68,49 +63,7 @@ void	free_data(t_data *data)
 		destroy_mutex_safely(&data->philos[i].philo_mutex);
 		i++;
 	}
-	destroy_mutex_safely(&data->last_meal_lock);
-	destroy_mutex_safely(&data->meals_eaten_lock);
 	destroy_mutex_safely(&data->stop_lock);
-	destroy_mutex_safely(&data->print_lock);
-	destroy_mutex_safely(&data->eating_lock);
 	destroy_mutex_safely(&data->log_mutex);
-	destroy_mutex_safely(&data->death_mutex);
 	free_log_lst(data->log_lst);
 }
-
-void	*ft_memset(void *s, int c, size_t n)
-{
-	unsigned char	*cs;
-	size_t			i;
-
-	cs = (unsigned char *) s;
-	i = 0;
-	while (n--)
-	{
-		cs[i] = (unsigned char) c;
-		i++;
-	}
-	return (cs);
-}
-
-size_t	ft_strlcpy(char *dst, const char *src, int size)
-{
-	size_t	len_src;
-	int		i;
-
-	len_src = 0;
-	i = 0;
-	while (src[len_src])
-		len_src++;
-	if (size <= 0)
-		return (len_src);
-	while (src[i] && size - 1)
-	{
-		dst[i] = src[i];
-		i++;
-		size--;
-	}
-	dst[i] = 0;
-	return (len_src);
-}
-

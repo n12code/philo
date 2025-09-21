@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:14:10 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/16 15:10:13 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/21 16:41:44 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	log_action(t_data *data, int philo_id, const char *action,
 void	display_log(const t_log *log)
 {
 	printf("%s%lld %d %s%s\n", log->color, log->timestamp, log->philo_id
-			+ 1, log->action, RESET);
+		+ 1, log->action, RESET);
 }
 
 void	free_log_lst(t_log *log_lst)

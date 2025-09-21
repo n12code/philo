@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:18:18 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/11 16:02:40 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/21 16:41:01 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,9 @@ int	get_meals_eaten(t_philo *philo)
 	meals_eaten = philo->meals_eaten;
 	pthread_mutex_unlock(&philo->philo_mutex.mutex);
 	return (meals_eaten);
+}
+
+long long	get_time(void)
+{
+	return (get_time_us() / 1000LL);
 }

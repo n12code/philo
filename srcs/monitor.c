@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:16:15 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/11 17:57:44 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/21 17:07:08 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,7 @@ int	philo_died(t_philo *philo)
 	return (0);
 }
 
-int	philo_full(t_philo *philo)
-{
-	if (get_meals_eaten(philo) >= philo->data->n_meals)
-		return (1);
-	return (0);
-}
-
-static int	check_philosopher_status(t_data *data, int philosopher_id,
+int	check_philosopher_status(t_data *data, int philosopher_id,
 		int *death_detected)
 {
 	if (philo_died(&data->philos[philosopher_id]) && !(*death_detected))

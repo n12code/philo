@@ -6,7 +6,7 @@
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:18:51 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/11 16:52:04 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/21 16:11:15 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,13 +99,8 @@ int	init_data(int argc, char **argv, t_data *data)
 	data->i_scribe = 0;
 	data->i_philos = 0;
 	data->nbr_monitors = get_nbr_chunks(data->n_philos);
-	if (init_mutex_safely(&data->print_lock)
-		|| init_mutex_safely(&data->last_meal_lock)
-		|| init_mutex_safely(&data->stop_lock)
-		|| init_mutex_safely(&data->meals_eaten_lock)
-		|| init_mutex_safely(&data->eating_lock)
-		|| init_mutex_safely(&data->log_mutex)
-		|| init_mutex_safely(&data->death_mutex))
+	if (init_mutex_safely(&data->stop_lock)
+		|| init_mutex_safely(&data->log_mutex))
 		return (1);
 	return (0);
 }

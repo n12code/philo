@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_bis.c                                        :+:      :+:    :+:   */
+/*   utils_1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nbodin <nbodin@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 11:17:33 by nbodin            #+#    #+#             */
-/*   Updated: 2025/09/11 18:00:09 by nbodin           ###   ########lyon.fr   */
+/*   Updated: 2025/09/21 17:05:15 by nbodin           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,20 +63,4 @@ void	destroy_mutex_safely(t_mutex *mutex)
 {
 	if (mutex->init == 1)
 		pthread_mutex_destroy(&mutex->mutex);
-}
-
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
-{
-	int		i;
-
-	i = 0;
-	if (n == 0)
-		return (0);
-	while (s1[i] && s2[i] && n - 1
-		&& (unsigned char) s1[i] == (unsigned char) s2[i])
-	{
-		i++;
-		n--;
-	}
-	return ((unsigned char) s1[i] - (unsigned char) s2[i]);
 }
