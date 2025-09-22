@@ -33,8 +33,11 @@ void	*routine(void *philos_pointer)
 			break ;
 		if (philos_sleep(philos))
 			break ;
-		if (philos_think(philos))
-			break ;
+		if (philos->id % 2 == 0)
+		{
+			if (philos_think(philos))
+				break ;
+		}
 	}
 	return (NULL);
 }
